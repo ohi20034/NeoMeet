@@ -87,7 +87,7 @@ class User {
       // Generate JWT token
       const token = jwt.sign(
         { userId: user.user_id, email: user.email, role: user.role },
-        process.env.JWT_SECRET_KEY || 'your_jwt_secret_key',
+        process.env.JWT_SECRET_KEY,
         { expiresIn: '10d' } // Token expiration time set to 10 days
     );
     
