@@ -57,7 +57,14 @@ class User {
       throw new Error('Error fetching user: ' + err.message);
     }
   }
-
+  static async getById(id) {
+    try {
+        const [rows] = await pool.execute('SELECT * FROM HostMeetings WHERE id = ?', [id]);
+        return rows[0];
+    } catch (err) {
+        throw new Error('Error fetching host meeting: ' + err.message);
+    }
+}
   static async comparePassword(plainPassword, hashedPassword) {
     return bcrypt.compare(plainPassword, hashedPassword); 
   }
