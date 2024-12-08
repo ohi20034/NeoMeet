@@ -47,7 +47,6 @@ exports.getHostMeetingById = async (req, res) => {
 exports.updateHostMeeting = async (req, res) => {
     const { meetingId } = req.params;
     const {meeting_title, meeting_date, time_slots, recurring } = req.body;
-
     try {
         
         const meeting = await HostMeetings.getById(meetingId);

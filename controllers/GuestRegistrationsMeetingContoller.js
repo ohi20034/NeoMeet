@@ -1,25 +1,40 @@
 const GuestRegistration = require('../models/GuestRegistrationsMeeting');
 
 exports.createGuestRegistration = async (req, res) => {
-  const { meeting_id, name, phone, email, message } = req.body;
+    const { meeting_id, name, phone, email, message, started_time, ended_time } = req.body;
+  
+    try {
+      const [rows] = await db.query(
+        `
+        SELECT * 
+        FROM hostmeetings
+        WHERE meeting_id = ? 
+          AND book_id = 0
+          AND (start_time < ? AND end_time > ?)
+        `,
+        [meeting_id, ended_time, started_time]
+      );
+  
+      if (rows.length > 0) {
+        return res.status(400).json({ message: 'The selected time slot is already booked.' });
+      }
 
-  try {
-    const result = await GuestRegistration.create({
-      meeting_id,
-      name,
-      phone,
-      email,
-      message,
-    });
-
-    res.status(201).json({
-      message: 'Guest registration created successfully!',
-      registrationId: result.insertId,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+      const [result] = await db.query(
+        `
+        INSERT INTO guestregistrations (meeting_id, name, phone, email, message)
+        VALUES (?, ?, ?, ?, ?)
+        `,
+        [meeting_id, name, phone, email, message]
+      );
+  
+      res.status(201).json({
+        message: 'Guest registration created successfully!',
+        registrationId: result.insertId,
+      });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
 
 exports.getRegistrationsByMeetingId = async (req, res) => {
   const { meetingId } = req.params;
