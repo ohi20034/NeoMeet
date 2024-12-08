@@ -30,7 +30,7 @@ class HostMeetings {
         try {
             await HostMeetings.checkTableExists();
             const { host_id, meeting_date, time_slots } = meetingData;
-            const timeSlotsString = JSON.stringify(time_slots); 
+            const timeSlotsString = JSON.stringify(time_slots);
 
             const [result] = await pool.execute(
                 'INSERT INTO HostMeetings (host_id, meeting_date, time_slots) VALUES (?, ?, ?)',
@@ -63,7 +63,7 @@ class HostMeetings {
     static async update(id, meetingData) {
         try {
             const { meeting_date, time_slots } = meetingData;
-            const timeSlotsString = JSON.stringify(time_slots); 
+            const timeSlotsString = JSON.stringify(time_slots);
 
             const [result] = await pool.execute(
                 `UPDATE HostMeetings 
