@@ -1,10 +1,10 @@
 const HostMeetings = require('../models/HostMeetings');
 
 exports.createHostMeeting = async (req, res) => {
-    const { host_id, meeting_date, time_slots, recurring } = req.body;
+    const { host_id,meeting_title, meeting_date, time_slots, recurring } = req.body;
 
     try {
-        const result = await HostMeetings.create({ host_id, meeting_date, time_slots, recurring });
+        const result = await HostMeetings.create({ host_id,meeting_title, meeting_date, time_slots, recurring });
         res.status(201).json({
             message: 'Host meeting created successfully!',
             meetingId: result.insertId
@@ -46,7 +46,7 @@ exports.getHostMeetingById = async (req, res) => {
 
 exports.updateHostMeeting = async (req, res) => {
     const { meetingId } = req.params;
-    const { meeting_date, time_slots, recurring } = req.body;
+    const {meeting_title, meeting_date, time_slots, recurring } = req.body;
 
     try {
         
@@ -56,7 +56,7 @@ exports.updateHostMeeting = async (req, res) => {
         }
 
         
-        const result = await HostMeetings.update(meetingId, { meeting_date, time_slots, recurring });
+        const result = await HostMeetings.update(meetingId, {meeting_title, meeting_date, time_slots, recurring });
 
         if (result.affectedRows === 0) {
             return res.status(400).json({ message: 'Failed to update meeting.' });

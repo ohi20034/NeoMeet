@@ -8,7 +8,8 @@ class HostMeetings {
                 await pool.execute(`
           CREATE TABLE HostMeetings (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            host_id INT,                      
+            host_id INT,
+            meeting_title,                      
             meeting_date DATE,                 
             time_slots TEXT,
             recurring BOOLEAN DEFAULT FALSE,                   
@@ -29,12 +30,12 @@ class HostMeetings {
     static async create(meetingData) {
         try {
             await HostMeetings.checkTableExists();
-            const { host_id, meeting_date, time_slots } = meetingData;
+            const { host_id,meeting_title, meeting_date, time_slots } = meetingData;
             const timeSlotsString = JSON.stringify(time_slots);
 
             const [result] = await pool.execute(
-                'INSERT INTO HostMeetings (host_id, meeting_date, time_slots) VALUES (?, ?, ?)',
-                [host_id, meeting_date, timeSlotsString]
+                'INSERT INTO HostMeetings (host_id,meeting_title, meeting_date, time_slots) VALUES (?,?, ?, ?)',
+                [host_id,meeting_title, meeting_date, timeSlotsString]
             );
             return result;
         } catch (err) {
@@ -67,9 +68,9 @@ class HostMeetings {
 
             const [result] = await pool.execute(
                 `UPDATE HostMeetings 
-         SET meeting_date = ?, time_slots = ?, updated_at = CURRENT_TIMESTAMP 
+         SET meeting_title = ?, meeting_date = ?, time_slots = ?, updated_at = CURRENT_TIMESTAMP 
          WHERE id = ?`,
-                [meeting_date, timeSlotsString, id]
+                [meeting_title,meeting_date, timeSlotsString, id]
             );
 
             return result;
