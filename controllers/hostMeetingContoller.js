@@ -49,13 +49,13 @@ exports.updateHostMeeting = async (req, res) => {
     const { meeting_date, time_slots, recurring } = req.body;
 
     try {
-        // Check if meeting exists
+        
         const meeting = await HostMeetings.getById(meetingId);
         if (!meeting) {
             return res.status(404).json({ message: 'Meeting not found.' });
         }
 
-        // Update the meeting
+        
         const result = await HostMeetings.update(meetingId, { meeting_date, time_slots, recurring });
 
         if (result.affectedRows === 0) {
