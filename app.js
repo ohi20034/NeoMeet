@@ -8,6 +8,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoute');
 const hostMeetingRoutes = require('./routes/hostMeetingRoute');
+const guestMeetingRoutes = require('./routes/GuestRegistrationsMeetingRoute')
 const verifyToken = require('./middleware/verifyToken');
 
 const pool = require('./util/database');
@@ -23,7 +24,7 @@ app.get('/protected', verifyToken, (req, res) => {
 
 app.use('/api', userRoutes);
 app.use('/api', hostMeetingRoutes);
-
+app.use('/api',guestMeetingRoutes);
 
 async function checkDbConnection() {
     try {

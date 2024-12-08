@@ -415,3 +415,117 @@ This API manages host meetings. It allows creating, reading, updating, and delet
 - **Timestamps:** All dates are in ISO 8601 format.
 - Ensure proper error handling to manage invalid inputs or server issues.
 
+Here's the content of the API documentation in Markdown format:
+
+markdown
+Copy code
+# API Documentation: Guest Registrations
+
+This document provides the API documentation for managing guest registrations for host meetings.
+
+## Base URL
+
+http://<your-server-address>/api
+
+yaml
+Copy code
+
+---
+
+## Endpoints
+
+### 1. Create Guest Registration
+**POST /guestregistrations**
+
+**Description**: Create a new guest registration for a specific meeting.
+
+**Request Body**:
+
+```json
+{
+  "meeting_id": 1,
+  "name": "John Doe",
+  "phone": "1234567890",
+  "email": "john.doe@example.com",
+  "message": "Looking forward to the meeting!"
+}
+Responses:
+
+201 Created:
+json
+Copy code
+{
+  "message": "Guest registration created successfully!",
+  "registrationId": 1
+}
+500 Internal Server Error:
+json
+Copy code
+{
+  "message": "Error creating guest registration: <error_message>"
+}
+2. Get Registrations by Meeting ID
+GET /guestregistrations/meeting/:meetingId
+
+Description: Retrieve all guest registrations for a specific meeting.
+
+Path Parameter:
+
+meetingId: The ID of the host meeting.
+Responses:
+
+200 OK:
+json
+Copy code
+[
+  {
+    "id": 1,
+    "meeting_id": 1,
+    "name": "John Doe",
+    "phone": "1234567890",
+    "email": "john.doe@example.com",
+    "message": "Looking forward to the meeting!",
+    "created_at": "2024-12-09T12:00:00.000Z",
+    "updated_at": "2024-12-09T12:00:00.000Z"
+  }
+]
+404 Not Found:
+json
+Copy code
+{
+  "message": "No registrations found for this meeting."
+}
+500 Internal Server Error:
+json
+Copy code
+{
+  "message": "Error fetching registrations: <error_message>"
+}
+3. Delete Guest Registration
+DELETE /guestregistrations/:registrationId
+
+Description: Delete a guest registration by its ID.
+
+Path Parameter:
+
+registrationId: The ID of the guest registration to delete.
+Responses:
+
+200 OK:
+json
+Copy code
+{
+  "message": "Guest registration deleted successfully."
+}
+404 Not Found:
+json
+Copy code
+{
+  "message": "Guest registration not found."
+}
+500 Internal Server Error:
+json
+Copy code
+{
+  "message": "Error deleting registration: <error_message>"
+}
