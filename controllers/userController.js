@@ -1,6 +1,5 @@
 const User = require('../models/User');
 
-// Controller method to create a new user
 exports.createUser = async (req, res) => {
     const { name, email, password_hash, role, timezone, organization_name } = req.body;
 
@@ -23,7 +22,6 @@ exports.createUser = async (req, res) => {
     }
 };
 
-// Controller method to get a user by email
 exports.getUserByEmail = async (req, res) => {
     const { email } = req.params;
 
@@ -39,7 +37,6 @@ exports.getUserByEmail = async (req, res) => {
     }
 };
 
-// Controller method to get a user by ID
 exports.getUserById = async (req, res) => {
     const { userId } = req.params;
 
@@ -59,7 +56,6 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
   
     try {
-      // Validate email and password and generate JWT token
       const { token, user } = await User.login(email, password);
       return res.status(200).json({
         message: 'Login successful',

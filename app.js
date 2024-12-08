@@ -19,7 +19,7 @@ app.get('/protected', verifyToken, (req, res) => {
   res.json({ message: 'This is a protected route', user: req.user });
 });
 
-// First use the userRoutes
+
 app.use('/api', userRoutes);
 
 
@@ -37,7 +37,7 @@ async function checkDbConnection() {
 
     } catch (err) {
         console.error('Error connecting to the database:', err.message);
-        process.exit(1);  // Exit the process to avoid running the app without DB connection
+        process.exit(1);  
     }
 }
 
