@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/ohi20034/NeoMeet#readme",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "mysql2": "^3.11.5",
     "nodemon": "^3.1.7"
   }
 }
