@@ -230,8 +230,8 @@ This API manages host meetings. It allows creating, reading, updating, and delet
   "host_id": 1,
   "meeting_date": "2024-12-15",
   "time_slots": [
-    { "start_time": "09:00", "end_time": "10:00" },
-    { "start_time": "14:00", "end_time": "15:00" }
+    { "start_time": "09:00", "end_time": "10:00","book_id": "0" },
+    { "start_time": "14:00", "end_time": "15:00", "book_id": "1" } // book id is the registered database id where the user registers this time
   ],
   "recurring": false
 }
