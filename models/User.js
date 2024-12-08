@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken'); 
 
 class User {
-
   static async checkTableExists() {
     try {
       const [rows] = await pool.execute("SHOW TABLES LIKE 'Users'");

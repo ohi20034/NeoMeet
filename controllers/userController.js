@@ -53,23 +53,23 @@ exports.getUserById = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
-  
+
     try {
-      const { token, user } = await User.login(email, password);
-      return res.status(200).json({
-        message: 'Login successful',
-        token: token,
-        user: {
-          userId: user.user_id,
-          name: user.name,
-          email: user.email,
-          timezone: user.timezone,
-          organizationName: user.organization_name,
-        }
-      });
+        const { token, user } = await User.login(email, password);
+        return res.status(200).json({
+            message: 'Login successful',
+            token: token,
+            user: {
+                userId: user.user_id,
+                name: user.name,
+                email: user.email,
+                timezone: user.timezone,
+                organizationName: user.organization_name,
+            }
+        });
     } catch (err) {
-      return res.status(400).json({
-        message: err.message || 'Login failed. Please check your credentials.',
-      });
+        return res.status(400).json({
+            message: err.message || 'Login failed. Please check your credentials.',
+        });
     }
-  };
+};
