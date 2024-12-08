@@ -5,24 +5,21 @@ const app = express();
 
 const pool = require('./util/database');
 
-app.get('/', (req, res) => {
-    res.send("hello world");
-})
+app.use(express.json());
 
 
 async function checkDbConnection() {
-    console.log('hi');
-    pool.getConnection((err, connection) => {
-        if (err) {
-            console.error('Error connecting to the database:', err.message);
-        } else {
-            console.log('Database is connected!');
-            app.listen(process.env.PORT || 3000, () => {
-                console.log(`Server running on port ${process.env.PORT || 3000}`);
-            });
+    try {
+        const connection = await pool.getConnection();
+        console.log('Database is connected!');
 
-        }
-    });
+        app.listen(process.env.PORT || 3000, () => {
+            console.log(`Server running on port ${process.env.PORT || 3000}`);
+        });
+        connection.release(); // Always release the connection after use
+    } catch (err) {
+        throw new Error('Error connecting to the database: ' + err.message);
+    }
 }
 
 checkDbConnection();
