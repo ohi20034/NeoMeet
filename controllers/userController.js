@@ -1,14 +1,13 @@
 const User = require('../models/User');
 
 exports.createUser = async (req, res) => {
-    const { name, email, password_hash, role, timezone, organization_name } = req.body;
+    const { name, email, password_hash, timezone, organization_name } = req.body;
 
     try {
         const result = await User.create({
             name,
             email,
             password_hash,
-            role,
             timezone,
             organization_name
         });
@@ -64,7 +63,6 @@ exports.loginUser = async (req, res) => {
           userId: user.user_id,
           name: user.name,
           email: user.email,
-          role: user.role,
           timezone: user.timezone,
           organizationName: user.organization_name,
         }

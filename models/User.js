@@ -14,7 +14,6 @@ class User {
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password_hash VARCHAR(255) NOT NULL,
-            role ENUM('Host', 'Guest') NOT NULL,
             timezone VARCHAR(50) NOT NULL,
             organization_name VARCHAR(255) DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -34,12 +33,11 @@ class User {
       await User.checkTableExists();
       const hashedPassword = await bcrypt.hash(userData.password_hash, 12); 
       const [result] = await pool.execute(
-        'INSERT INTO Users (name, email, password_hash, role, timezone, organization_name) VALUES (?, ?, ?, ?, ?, ?)',
+        'INSERT INTO Users (name, email, password_hash, timezone, organization_name) VALUES (?,  ?, ?, ?, ?)',
         [
           userData.name,
           userData.email,
           hashedPassword,
-          userData.role,
           userData.timezone,
           userData.organization_name,
         ]
@@ -80,7 +78,7 @@ class User {
       }
 
       const token = jwt.sign(
-        { userId: user.user_id, email: user.email, role: user.role },
+        { userId: user.user_id, email: user.email },
         process.env.JWT_SECRET_KEY,
         { expiresIn: '10d' } 
     );
