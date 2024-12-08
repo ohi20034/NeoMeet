@@ -212,3 +212,206 @@ Ensure the following environment variables are set:
 - `JWT_SECRET_KEY`: The secret key for JWT signing.
 
 
+# HostMeetings API Documentation
+
+This API manages host meetings. It allows creating, reading, updating, and deleting meeting records in the system.
+
+## Base URL:
+`<your_base_url>/api`
+
+## Endpoints:
+
+### 1. Create a Host Meeting
+**POST** `/hostmeetings`
+
+#### Request Body:
+```json
+{
+  "host_id": 1,
+  "meeting_date": "2024-12-15",
+  "time_slots": [
+    { "start_time": "09:00", "end_time": "10:00" },
+    { "start_time": "14:00", "end_time": "15:00" }
+  ],
+  "recurring": false
+}
+```
+
+#### Response:
+**Status Code: 201 Created**
+```json
+{
+  "message": "Host meeting created successfully!",
+  "meetingId": 1
+}
+```
+
+**Error Response:**  
+**Status Code: 500 Internal Server Error**
+```json
+{
+  "message": "Error message"
+}
+```
+
+---
+
+### 2. Get Host Meetings by Host ID
+**GET** `/hostmeetings/host/:hostId`
+
+#### URL Parameters:
+- `hostId` (integer): ID of the host.
+
+#### Response:
+**Status Code: 200 OK**
+```json
+{
+    "id": 1,
+    "host_id": 1,
+    "meeting_date": "2024-12-14T18:00:00.000Z",
+    "time_slots": "[{"start_time":"09:00","end_time":"10:00"},{"start_time":"14:00","end_time":"15:00"}]",
+    "recurring": 0,
+    "created_at": "2024-12-08T17:34:19.000Z",
+    "updated_at": "2024-12-08T17:34:19.000Z"
+}
+```
+
+**Error Responses:**  
+**Status Code: 404 Not Found**
+```json
+{
+  "message": "No meetings found for this host."
+}
+```
+**Status Code: 500 Internal Server Error**
+```json
+{
+  "message": "Error message"
+}
+```
+
+---
+
+### 3. Get Host Meeting by ID
+**GET** `/hostmeetings/:meetingId`
+
+#### URL Parameters:
+- `meetingId` (integer): ID of the meeting.
+
+#### Response:
+**Status Code: 200 OK**
+```json
+{
+    "id": 1,
+    "host_id": 1,
+    "meeting_date": "2024-12-14T18:00:00.000Z",
+    "time_slots": "[{"start_time":"09:00","end_time":"10:00"},{"start_time":"14:00","end_time":"15:00"}]",
+    "recurring": 0,
+    "created_at": "2024-12-08T17:34:19.000Z",
+    "updated_at": "2024-12-08T17:34:19.000Z"
+}
+```
+
+**Error Responses:**  
+**Status Code: 404 Not Found**
+```json
+{
+  "message": "Meeting not found."
+}
+```
+**Status Code: 500 Internal Server Error**
+```json
+{
+  "message": "Error message"
+}
+```
+
+---
+
+### 4. Update a Host Meeting
+**PUT** `/hostmeetings/:meetingId`
+
+#### URL Parameters:
+- `meetingId` (integer): ID of the meeting.
+
+#### Request Body:
+```json
+{
+  "meeting_date": "2024-12-16",
+  "time_slots": ["10:00-11:00", "15:00-16:00"]
+}
+```
+
+#### Response:
+**Status Code: 200 OK**
+```json
+{
+  "message": "Meeting updated successfully!",
+  "updatedMeetingId": 1
+}
+```
+
+**Error Responses:**  
+**Status Code: 404 Not Found**
+```json
+{
+  "message": "Meeting not found."
+}
+```
+**Status Code: 400 Bad Request**
+```json
+{
+  "message": "Failed to update meeting."
+}
+```
+**Status Code: 500 Internal Server Error**
+```json
+{
+  "message": "Error message"
+}
+```
+
+---
+
+### 5. Delete a Host Meeting
+**DELETE** `/hostmeetings/:meetingId`
+
+#### URL Parameters:
+- `meetingId` (integer): ID of the meeting.
+
+#### Response:
+**Status Code: 200 OK**
+```json
+{
+  "message": "Meeting deleted successfully!",
+  "deletedMeetingId": 1
+}
+```
+
+**Error Responses:**  
+**Status Code: 404 Not Found**
+```json
+{
+  "message": "Meeting not found."
+}
+```
+**Status Code: 400 Bad Request**
+```json
+{
+  "message": "Failed to delete meeting."
+}
+```
+**Status Code: 500 Internal Server Error**
+```json
+{
+  "message": "Error message"
+}
+```
+
+---
+
+## Notes:
+- **Time Slots Format:** Time slots are expected as an array of strings, e.g., `["09:00-10:00", "14:00-15:00"]`.
+- **Timestamps:** All dates are in ISO 8601 format.
+- Ensure proper error handling to manage invalid inputs or server issues.
+
