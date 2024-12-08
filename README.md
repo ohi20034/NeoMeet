@@ -23,7 +23,6 @@ Creates a new user in the system.
   "name": "string",
   "email": "string",
   "password_hash": "string",
-  "role": "Host | Guest",
   "timezone": "string",
   "organization_name": "string"
 }
@@ -59,7 +58,6 @@ Retrieves user details by email.
   "name": "string",
   "email": "string",
   "password_hash": "string",
-  "role": "string",
   "timezone": "string",
   "organization_name": "string",
   "created_at": "string"
@@ -93,7 +91,6 @@ Retrieves user details by ID.
   "name": "string",
   "email": "string",
   "password_hash": "string",
-  "role": "string",
   "timezone": "string",
   "organization_name": "string",
   "created_at": "string"
@@ -134,7 +131,6 @@ Authenticates a user and returns a JWT.
     "userId": "integer",
     "name": "string",
     "email": "string",
-    "role": "string",
     "timezone": "string",
     "organizationName": "string"
   }
@@ -166,7 +162,6 @@ An example of a protected route that requires a valid JWT token.
   "user": {
     "userId": "integer",
     "email": "string",
-    "role": "string"
   }
 }
 ```
@@ -190,7 +185,6 @@ An example of a protected route that requires a valid JWT token.
 - `name` (string, required)
 - `email` (string, unique, required)
 - `password_hash` (string, required)
-- `role` (enum: 'Host', 'Guest', required)
 - `timezone` (string, required)
 - `organization_name` (string, optional)
 - `created_at` (timestamp, default: current timestamp)
