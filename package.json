@@ -1,0 +1,24 @@
+{
+  "name": "neomeet",
+  "version": "1.0.0",
+  "description": "Backend API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohi20034/NeoMeet.git"
+  },
+  "author": "Imdadul Haque Ohi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohi20034/NeoMeet/issues"
+  },
+  "homepage": "https://github.com/ohi20034/NeoMeet#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.7"
+  }
+}
