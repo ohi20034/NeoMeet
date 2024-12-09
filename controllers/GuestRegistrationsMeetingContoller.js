@@ -1,4 +1,6 @@
 const pool = require('../util/database');
+const User = require('../models/User');
+const HostMeetings = require('../models/GuestRegistrationsMeeting')
 
 exports.createGuestRegistration = async (req, res) => {
     const { meeting_id, name, phone, email, message, started_time, ended_time } = req.body;
@@ -87,5 +89,58 @@ exports.deleteGuestRegistration = async (req, res) => {
     res.status(200).json({ message: 'Guest registration deleted successfully.' });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+exports.searchNearestMeeting = async (req, res) => {
+  const { date, time, host_name } = req.query;
+
+  try {
+
+    await User.checkTableExists();
+    await HostMeetings.checkTableExists();
+
+  
+    const [users] = await pool.execute(
+      'SELECT * FROM Users WHERE name LIKE ?', 
+      [`%${host_name}%`]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'Host not found' });
+    }
+
+    const hostIds = users.map(user => user.user_id);
+    const hostIdsString = hostIds.join(',');
+
+ 
+    const [meetings] = await pool.execute(
+      `
+      SELECT hm.*, u.name AS host_name
+      FROM HostMeetings hm
+      JOIN Users u ON hm.host_id = u.user_id
+      WHERE hm.meeting_date = ?
+      AND EXISTS (
+        SELECT 1
+        FROM JSON_TABLE(
+          hm.time_slots, '$[*]'
+          COLUMNS (
+            start_time TIME PATH '$.start_time'
+          )
+        ) jt
+        WHERE jt.start_time = ?
+      )
+      AND hm.host_id IN (${hostIdsString})
+      `,
+      [date, time]
+    );
+
+    if (meetings.length === 0) {
+      return res.status(404).json({ message: 'No meetings found for the given criteria' });
+    }
+
+    res.status(200).json({ meetings });
+  } catch (err) {
+    res.status(500).json({ message: 'Error searching nearest meeting', error: err.message });
   }
 };

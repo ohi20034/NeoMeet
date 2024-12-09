@@ -10,5 +10,6 @@ router.get('/guestregistrations/meeting/:meetingId', guestRegistrationController
 
 router.get('/getAllMeeting/:hostId', guestRegistrationController.getAllMeeting);
 router.delete('/guestregistrations/:registrationId', guestRegistrationController.deleteGuestRegistration);
+router.get('/searchNearestMeeting', guestRegistrationController.searchNearestMeeting);
 
 module.exports = router;
