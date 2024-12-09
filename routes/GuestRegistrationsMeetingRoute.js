@@ -8,7 +8,7 @@ router.post('/guestregistrations', guestRegistrationController.createGuestRegist
 
 router.get('/guestregistrations/meeting/:meetingId', guestRegistrationController.getRegistrationsByMeetingId);
 
-router.get('/getAllMeetin', guestRegistrationController.getAllMeeting);
+router.get('/getAllMeeting/:hostId', guestRegistrationController.getAllMeeting);
 router.delete('/guestregistrations/:registrationId', guestRegistrationController.deleteGuestRegistration);
 
 module.exports = router;

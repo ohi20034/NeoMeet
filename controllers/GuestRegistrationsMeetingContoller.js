@@ -1,4 +1,4 @@
-const GuestRegistration = require('../models/GuestRegistrationsMeeting');
+const pool = require('../util/database');
 
 exports.createGuestRegistration = async (req, res) => {
     const { meeting_id, name, phone, email, message, started_time, ended_time } = req.body;
@@ -8,7 +8,7 @@ exports.createGuestRegistration = async (req, res) => {
         `
         SELECT * 
         FROM hostmeetings
-        WHERE meeting_id = ? 
+        WHERE meeting_id = ?  
           AND book_id = 0
           AND (start_time < ? AND end_time > ?)
         `,
@@ -53,16 +53,22 @@ exports.getRegistrationsByMeetingId = async (req, res) => {
 };
 
 exports.getAllMeeting = async (req, res) => {
-  const { host_id } = req.query; 
+  const { hostId } = req.params;
 
-  if (!host_id) {
-      return res.status(400).json({ message: 'host_id is required' });
+  console.log('Received hostId:', hostId); 
+
+  if (!hostId) {
+      return res.status(400).json({ message: 'hostId is required' });
   }
 
   try {
-      const [rows] = await db.query('SELECT * FROM hostmeetings WHERE host_id = ?', [host_id]);
+      const [rows] = await pool.execute(`SELECT * FROM hostmeetings WHERE host_id = ?`, [hostId]);
+      if (rows.length === 0) {
+          return res.status(404).json({ message: 'No meetings found for this host.' });
+      } 
       res.status(200).json(rows);
   } catch (error) {
+      console.error('Error fetching host meetings:', error); 
       res.status(500).json({ message: 'Error fetching host meetings', error: error.message });
   }
 };
