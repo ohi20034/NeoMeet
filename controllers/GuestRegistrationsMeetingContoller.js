@@ -52,6 +52,15 @@ exports.getRegistrationsByMeetingId = async (req, res) => {
   }
 };
 
+exports.getAllMeeting = async (req, res) => {
+  try {
+      const [rows] = await db.query('SELECT * FROM hostmeetings'); 
+      res.status(200).json(rows);
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching host meetings', error: error.message });
+  }
+};
+
 exports.deleteGuestRegistration = async (req, res) => {
   const { registrationId } = req.params;
 
